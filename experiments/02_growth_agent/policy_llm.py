@@ -85,6 +85,7 @@ def make_client():
         import anthropic
     except ImportError as e:
         raise SystemExit("LLM policy needs the Anthropic SDK: pip install -r requirements.txt (Python 3.10+)") from e
+    world.load_env()
     return anthropic.Anthropic()
 
 

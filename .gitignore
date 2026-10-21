@@ -4,3 +4,4 @@ __pycache__/
 sandbox/data/
 experiments/*/out/
 .env
+.DS_Store

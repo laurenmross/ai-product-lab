@@ -16,6 +16,7 @@ from __future__ import annotations
 
 import csv
 import json
+import os
 import random
 from collections import defaultdict
 from datetime import datetime
@@ -24,6 +25,22 @@ from pathlib import Path
 SANDBOX_DIR = Path(__file__).resolve().parent
 DATA_DIR = SANDBOX_DIR / "data"
 HIDDEN_DIR = DATA_DIR / "_hidden"
+ENV_FILE = SANDBOX_DIR.parent / ".env"
+
+
+def load_env() -> None:
+    """Load KEY=value lines from the repo's .env into the environment (never committed).
+
+    Variables already set in the shell win, so a key exported in your terminal
+    overrides the file.
+    """
+    if not ENV_FILE.exists():
+        return
+    for line in ENV_FILE.read_text().splitlines():
+        line = line.strip()
+        if line and not line.startswith("#") and "=" in line:
+            key, value = line.split("=", 1)
+            os.environ.setdefault(key.strip(), value.strip().strip('"').strip("'"))
 
 # "Today" inside the sandbox. Fixed so every run is reproducible.
 SANDBOX_TODAY = datetime(2026, 10, 1, 9, 0)
